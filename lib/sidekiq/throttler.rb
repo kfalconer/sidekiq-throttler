@@ -37,11 +37,14 @@ module Sidekiq
       end
 
       rate_limit.exceeded do |delay|
-        worker.class.perform_in(delay, *msg['args'])
+        ts = Time.now.to_f + delay
+
+        Sidekiq.redis do |conn|
+          conn.zadd('schedule', [[ts.to_s, Sidekiq.dump_json(msg)]])
+        end
       end
 
       rate_limit.execute
     end
-
   end # Throttler
 end # Sidekiq

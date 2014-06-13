@@ -102,6 +102,7 @@ module Sidekiq
       #
       # @return [true, false]
       def can_throttle?
+
         [threshold, period].select(&:zero?).empty?
       end
 
@@ -145,8 +146,10 @@ module Sidekiq
         return @within_bounds.call unless can_throttle?
 
         if exceeded?
+          Sidekiq::Logging.logger.info("rate exceeded.")
           @exceeded.call(period)
         else
+          Sidekiq::Logging.logger.info("tick.")
           increment
           @within_bounds.call
         end
