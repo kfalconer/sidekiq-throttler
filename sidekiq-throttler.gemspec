@@ -21,6 +21,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'activesupport'
   gem.add_dependency 'sidekiq', '>= 2.5', '< 3.1'
 
+  gem.add_development_dependency('geminabox', "~> 0.12.4")
   gem.add_development_dependency 'appraisal', '~> 0.5'
   gem.add_development_dependency 'growl'
   gem.add_development_dependency 'guard'
